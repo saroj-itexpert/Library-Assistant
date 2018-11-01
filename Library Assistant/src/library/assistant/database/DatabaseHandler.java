@@ -19,6 +19,33 @@ public class DatabaseHandler {
 	public DatabaseHandler() {
 		createConnection();
 		setupBookTable();
+		setupMemberTable();
+	}
+	private void setupMemberTable() {
+		String TABLE_NAME = "MEMBER";
+		String sql = "CREATE TABLE "+ TABLE_NAME+ "("
+				+" id varchar(200) primary key,\n"
+				+" name varchar(200),\n"
+				+" mobile varchar(20),\n"
+				+" email varchar(100)"
+				+" )";
+				
+		try {
+			stmt = conn.createStatement();
+			DatabaseMetaData dbm = conn.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
+			if(tables.next()) {
+				System.out.println("Table "+ TABLE_NAME + " already exists");
+			}else {
+				stmt.execute(sql);
+				
+			}
+		}catch (SQLException e) {
+			System.err.println(e.getMessage()+"---setupDatabase");
+		}finally {
+			
+		}
+		
 	}
 	//code to create derby database connection
 	void createConnection() {

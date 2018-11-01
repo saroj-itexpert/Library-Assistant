@@ -20,6 +20,7 @@ import library.assistant.database.DatabaseHandler;
 
 public class BookAddController implements Initializable {
 
+	
 	@FXML
     private ResourceBundle resources;
 
