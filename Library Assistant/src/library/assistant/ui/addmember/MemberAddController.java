@@ -85,7 +85,7 @@ public class MemberAddController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//initiate DatabaseHandler
-		handler = new DatabaseHandler();
+		handler = DatabaseHandler.getInstance();
 	
 	}
 

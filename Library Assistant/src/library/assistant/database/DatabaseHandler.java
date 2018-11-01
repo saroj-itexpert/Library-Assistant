@@ -16,11 +16,20 @@ public class DatabaseHandler {
 	private static Connection conn = null;
 	private static Statement stmt = null;
 	//Constructor for starting program to create Connection
-	public DatabaseHandler() {
+	private DatabaseHandler() {
 		createConnection();
 		setupBookTable();
 		setupMemberTable();
 	}
+	
+	public static DatabaseHandler getInstance() {
+		
+		if(handler == null) {
+			handler = new DatabaseHandler();
+		}
+		return handler;
+	}
+	
 	private void setupMemberTable() {
 		String TABLE_NAME = "MEMBER";
 		String sql = "CREATE TABLE "+ TABLE_NAME+ "("
