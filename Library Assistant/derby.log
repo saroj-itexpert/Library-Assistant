@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Thu Nov 01 17:47:03 NPT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0166-cf26-df77-0000059c0730 
+on database directory /home/saroj/eclipse-workspace/Library Assistant/database/library2 with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Loaded from file:/home/saroj/Downloads/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_191-b12
+user.dir=/home/saroj/eclipse-workspace/Library Assistant
+os.name=Linux
+os.arch=amd64
+os.version=4.15.0-38-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
