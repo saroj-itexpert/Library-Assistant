@@ -12,10 +12,9 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
-			StackPane root =(StackPane) FXMLLoader.load(getClass().getClassLoader().getResource("library/assistant/ui/main/main.fxml"));
+			AnchorPane root =(AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("library/assistant/ui/login/login.fxml"));
 			Scene scene = new Scene(root);
 			scene.getStylesheets().addAll(Main.class.getResource("main.css").toExternalForm());
-			primaryStage.setTitle("Dashboard");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			

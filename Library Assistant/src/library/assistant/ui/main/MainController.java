@@ -27,6 +27,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -34,6 +35,9 @@ import library.assistant.database.DatabaseHandler;
 
 public class MainController implements Initializable {
 
+	@FXML
+	private StackPane rootPane;
+	
 	@FXML
 	private ListView<String> issueDataList;
 
@@ -79,7 +83,6 @@ public class MainController implements Initializable {
 	@FXML
 	void loadAddMember(ActionEvent event) {
 		loadWindow("/library/assistant/ui/addmember/member_add.fxml", "Add Member");
-
 	}
 
 	@FXML
@@ -93,13 +96,12 @@ public class MainController implements Initializable {
 		loadWindow("/library/assistant/ui/listmember/member_list.fxml", "Member List");
 
 	}
-	
 
-    @FXML
-    void loadSettingsOption(ActionEvent event) {
+	@FXML
+	void loadSettingsOption(ActionEvent event) {
 		loadWindow("/library/assistant/settings/settings.fxml", "Settings");
 
-    }
+	}
 
 	void loadWindow(String location, String title) {
 		try {
@@ -286,8 +288,7 @@ public class MainController implements Initializable {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Confirm Issue Operation");
 		alert.setHeaderText(null);
-		alert.setContentText(
-				"Are you sure want to return the book ?");
+		alert.setContentText("Are you sure want to return the book ?");
 
 		Optional<ButtonType> response = alert.showAndWait();
 		if (response.get() == ButtonType.OK) {
@@ -308,7 +309,7 @@ public class MainController implements Initializable {
 				alert.setContentText("Book Submission Failed");
 				alert.showAndWait();
 			}
-		}else {
+		} else {
 			Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Cancelled");
 			alert.setHeaderText(null);
@@ -316,11 +317,11 @@ public class MainController implements Initializable {
 			alert.showAndWait();
 		}
 	}
-	
-    @FXML
-    void loadRenewOp(ActionEvent event) {
-    	
-    	if (!isReadyForSubmission) {
+
+	@FXML
+	void loadRenewOp(ActionEvent event) {
+
+		if (!isReadyForSubmission) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Failed");
 			alert.setHeaderText(null);
@@ -328,37 +329,73 @@ public class MainController implements Initializable {
 			alert.showAndWait();
 			return;
 		}
-    	
-    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Confirm Renew Operation");
 		alert.setHeaderText(null);
-		alert.setContentText(
-				"Are you sure want to renew the book ?");
+		alert.setContentText("Are you sure want to renew the book ?");
 
 		Optional<ButtonType> response = alert.showAndWait();
 		if (response.get() == ButtonType.OK) {
-			String ac = "UPDATE ISSUE SET issueTime = CURRENT_TIMESTAMP, renew_count = renew_count + 1 WHERE BOOKID = '"+bookID.getText()+"'";
+			String ac = "UPDATE ISSUE SET issueTime = CURRENT_TIMESTAMP, renew_count = renew_count + 1 WHERE BOOKID = '"
+					+ bookID.getText() + "'";
 			System.out.println(ac);
-			if(databaseHandler.execAction(ac)) {
+			if (databaseHandler.execAction(ac)) {
 				Alert alert1 = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Success");
 				alert.setHeaderText(null);
 				alert.setContentText("Book has been Renewed");
 				alert.showAndWait();
-			}else {
+			} else {
 				Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
 				alert.setTitle("Cancelled");
 				alert.setHeaderText(null);
 				alert.setContentText("Renew Operation Cancelled!");
 				alert.showAndWait();
 			}
-		}else {
+		} else {
 			Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Cancelled");
 			alert.setHeaderText(null);
 			alert.setContentText("Renew Operation Cancelled!");
 			alert.showAndWait();
 		}
+	}
+
+	@FXML
+    void handleMenuClose(ActionEvent event) {
+    	((Stage)rootPane.getScene().getWindow()).close();
+    }
+	
+	
+    @FXML
+    void handleMenuAddBook(ActionEvent event) {
+    	loadWindow("/library/assistant/ui/addbook/add_book.fxml", "Add Book");
+
+    }
+
+    @FXML
+    void handleMenuAddMember(ActionEvent event) {
+    	loadWindow("/library/assistant/ui/addmember/member_add.fxml", "Add Member");
+
+    }
+    
+    @FXML
+    void handleMenuViewBook(ActionEvent event) {
+    	loadWindow("/library/assistant/ui/listbook/book_list.fxml", "Add Member");
+
+    }
+
+    @FXML
+    void handleMenuViewMember(ActionEvent event) {
+    	loadWindow("/library/assistant/ui/listmember/member_list.fxml", "Add Member");
+
+    }
+    
+    @FXML
+    void handleMenuFullScreen(ActionEvent event) {
+    	Stage stage = ((Stage)rootPane.getScene().getWindow());
+    	stage.setFullScreen(!stage.isFullScreen());
     }
 
 	@Override

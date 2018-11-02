@@ -1,1 +1,1 @@
-{"nDaysWithoutFine":14,"finePerDay":50.0,"username":"sir.oz","password":"admin"}
+{"nDaysWithoutFine":14,"finePerDay":2.0,"username":"saroj","password":"9aa8a2665a2dd608d784d513903dad733626441f"}
