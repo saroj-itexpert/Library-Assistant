@@ -1,12 +1,17 @@
 package library.assistant.ui.main;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Optional;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListView;
+
 import java.util.ResourceBundle;
 
 //import com.jfoenix.controls.JFXButton.ButtonType;
@@ -29,10 +34,16 @@ import library.assistant.database.DatabaseHandler;
 public class MainController implements Initializable {
 	
 	@FXML
+    private ListView<String> issueDataList;
+	
+	@FXML
     private HBox book_info;
 
     @FXML
     private TextField bookIDInput;
+    
+    @FXML
+    private TextField bookID;
    
     @FXML
     private TextField memberIDInput;
@@ -207,6 +218,60 @@ public class MainController implements Initializable {
 		 }
 	 
 	 }
+	 
+	 
+	 
+	  @FXML
+	    private void loadBookInfo2(ActionEvent event) {
+		  
+		  ObservableList<String> issueData = FXCollections.observableArrayList();
+		  
+		  String id = bookID.getText();
+		  String qu = "SELECT * FROM ISSUE WHERE bookID='"+id+"'";
+		  ResultSet rs = databaseHandler.execQuery(qu);
+		  try {
+			while(rs.next()) {
+				String mBookId = id;
+				String mMemberId = rs.getString("memberID");
+				Timestamp mIssueTime = rs.getTimestamp("issueTime");
+				int mRenewCount = rs.getInt("renew_count");
+				
+				issueData.add("Issue Date and Time: "+ mIssueTime.toGMTString());
+				issueData.add("Renew Count: "+mRenewCount);
+				
+				issueData.add("Book Information: ");			
+				qu = "SELECT * FROM BOOK WHERE ID = '"+mBookId+"'";
+				ResultSet r1 = databaseHandler.execQuery(qu);
+				while(r1.next()) {
+					issueData.add("Book Name: "+r1.getString("title"));			
+					issueData.add("Book ID: "+r1.getString("id"));			
+					issueData.add("Book Author: "+r1.getString("author"));			
+					issueData.add("Book Publisher: "+r1.getString("publisher"));			
+				}
+				qu = "SELECT * FROM MEMBER WHERE ID = '"+mMemberId+"'";
+				r1 = databaseHandler.execQuery(qu);
+				issueData.add("Member Information:");
+				while(r1.next()) {
+					issueData.add("Name: "+r1.getString("name"));
+					issueData.add("Mobile: "+r1.getString("mobile"));
+					issueData.add("Email: "+r1.getString("email"));
+
+				}
+			
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		  issueDataList.getItems().setAll(issueData);
+	  
+	  
+	 
+		  
+	  }
+	 
+	  
+	  
+	 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

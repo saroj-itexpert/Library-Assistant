@@ -185,14 +185,14 @@
                            <children>
                               <BorderPane layoutX="196.0" layoutY="78.0" prefHeight="448.0" prefWidth="547.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <top>
-                                    <JFXTextField alignment="CENTER" prefHeight="20.0" prefWidth="50.0" promptText="ENTER BOOK ID" BorderPane.alignment="CENTER">
+                                    <JFXTextField fx:id="bookID" alignment="CENTER" labelFloat="true" onAction="#loadBookInfo2" prefHeight="20.0" prefWidth="50.0" promptText="ENTER BOOK ID" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets top="10.0" />
                                        </BorderPane.margin>
                                     </JFXTextField>
                                  </top>
                                  <center>
-                                    <ListView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <ListView fx:id="issueDataList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                        <padding>
                                           <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                                        </padding>
