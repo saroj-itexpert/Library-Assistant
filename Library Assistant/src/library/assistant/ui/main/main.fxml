@@ -163,11 +163,11 @@
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="129.0" prefWidth="547.0">
                                        <children>
-                                          <JFXButton onAction="#loadIssueOperation" prefHeight="51.0" prefWidth="144.0" styleClass="setup-button" stylesheets="@main.css" text="ISSUE">
+                                          <JFXButton onAction="#loadIssueOperation" prefHeight="35.0" prefWidth="121.0" styleClass="setup-button" stylesheets="@main.css" text="ISSUE">
                                              <graphic>
                                                 <ImageView fitHeight="31.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../icons/rename.png" />
+                                                      <Image url="@../icons/issue.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic></JFXButton>
@@ -201,18 +201,18 @@
                                  <bottom>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <JFXButton prefHeight="54.0" prefWidth="156.0" styleClass="setup-button" stylesheets="@main.css" text="RENEW">
+                                          <JFXButton prefHeight="42.0" prefWidth="141.0" styleClass="setup-button" stylesheets="@main.css" text="RENEW">
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin>
                                              <graphic>
-                                                <ImageView fitHeight="44.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="25.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../icons/reset.png" />
+                                                      <Image url="@../icons/renew.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic></JFXButton>
-                                          <JFXButton prefHeight="51.0" prefWidth="208.0" styleClass="setup-button" stylesheets="@main.css" text="SUBMISSION">
+                                          <JFXButton prefHeight="23.0" prefWidth="150.0" styleClass="setup-button" stylesheets="@main.css" text="SUBMISSION">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

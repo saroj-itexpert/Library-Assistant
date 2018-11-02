@@ -243,18 +243,18 @@ public class MainController implements Initializable {
 				qu = "SELECT * FROM BOOK WHERE ID = '"+mBookId+"'";
 				ResultSet r1 = databaseHandler.execQuery(qu);
 				while(r1.next()) {
-					issueData.add("Book Name: "+r1.getString("title"));			
-					issueData.add("Book ID: "+r1.getString("id"));			
-					issueData.add("Book Author: "+r1.getString("author"));			
-					issueData.add("Book Publisher: "+r1.getString("publisher"));			
+					issueData.add("\tBook Name: "+r1.getString("title"));			
+					issueData.add("\tBook ID: "+r1.getString("id"));			
+					issueData.add("\tBook Author: "+r1.getString("author"));			
+					issueData.add("\tBook Publisher: "+r1.getString("publisher"));			
 				}
 				qu = "SELECT * FROM MEMBER WHERE ID = '"+mMemberId+"'";
 				r1 = databaseHandler.execQuery(qu);
 				issueData.add("Member Information:");
 				while(r1.next()) {
-					issueData.add("Name: "+r1.getString("name"));
-					issueData.add("Mobile: "+r1.getString("mobile"));
-					issueData.add("Email: "+r1.getString("email"));
+					issueData.add("\tName: "+r1.getString("name"));
+					issueData.add("\tMobile: "+r1.getString("mobile"));
+					issueData.add("\tEmail: "+r1.getString("email"));
 
 				}
 			
