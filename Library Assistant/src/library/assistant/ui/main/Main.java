@@ -4,17 +4,30 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import library.assistant.database.DatabaseHandler;
 
 public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
-			AnchorPane root =(AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("library/assistant/ui/main/main.fxml"));
+			StackPane root =(StackPane) FXMLLoader.load(getClass().getClassLoader().getResource("library/assistant/ui/main/main.fxml"));
 			Scene scene = new Scene(root);
+			scene.getStylesheets().addAll(Main.class.getResource("main.css").toExternalForm());
 			primaryStage.setTitle("Dashboard");
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					DatabaseHandler.getInstance();
+				}
+			}).start();
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

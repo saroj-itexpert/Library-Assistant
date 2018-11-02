@@ -44,7 +44,7 @@ public class DatabaseHandler {
 			DatabaseMetaData dbm = conn.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
 			if(tables.next()) {
-				System.out.println("Table "+ TABLE_NAME + " already exists");
+				System.out.println("Table "+ TABLE_NAME + " already exists.You're good to go!");
 			}else {
 				stmt.execute(sql);
 				
@@ -81,7 +81,7 @@ public class DatabaseHandler {
 			DatabaseMetaData dbm = conn.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
 			if(tables.next()) {
-				System.out.println("Table "+ TABLE_NAME + " already exists");
+				System.out.println("Table "+ TABLE_NAME + " already exists. You're good to go!");
 			}else {
 				stmt.execute(sql);
 				

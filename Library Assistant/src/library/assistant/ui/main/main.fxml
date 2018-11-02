@@ -20,8 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.assistant.ui.main.MainController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
@@ -77,7 +76,7 @@
                   </Button>
                   <Button contentDisplay="TOP" layoutX="10.0" layoutY="95.0" mnemonicParsing="false" onAction="#loadBookTable" prefHeight="100.0" prefWidth="158.0" text="VIEW BOOKS">
                      <graphic>
-                        <ImageView fitHeight="36.0" fitWidth="41.0" onDragDetected="#loadBookTable" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="36.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../icons/view_book.png" />
                            </image>
@@ -105,21 +104,26 @@
                            <children>
                               <VBox layoutX="35.0" layoutY="71.0" prefHeight="448.0" prefWidth="547.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="157.0" prefWidth="547.0">
+                                    <HBox fx:id="book_info" alignment="CENTER" prefHeight="157.0" prefWidth="547.0" style="-fx-background-color: #e7e7e7;">
                                        <children>
-                                          <TextField prefHeight="26.0" prefWidth="176.0" promptText="Enter Book ID">
+                                          <TextField fx:id="bookIDInput" onAction="#loadBookInfo" prefHeight="26.0" prefWidth="176.0" promptText="Enter Book ID">
                                              <HBox.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </HBox.margin>
                                           </TextField>
                                           <VBox alignment="CENTER" prefHeight="157.0" prefWidth="378.0">
                                              <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Book Name" textAlignment="CENTER" wrappingWidth="367.8388671875">
+                                                <Text fx:id="bookName" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Name" textAlignment="CENTER" wrappingWidth="367.8388671875">
                                                    <VBox.margin>
                                                       <Insets />
                                                    </VBox.margin>
                                                 </Text>
-                                                <Text layoutX="10.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" textAlignment="CENTER" wrappingWidth="367.8388671875">
+                                                <Text fx:id="bookAuthor" layoutX="10.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" textAlignment="CENTER" wrappingWidth="367.8388671875">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <Text fx:id="bookStatus" layoutX="10.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Status" textAlignment="CENTER" wrappingWidth="367.8388671875">
                                                    <VBox.margin>
                                                       <Insets top="10.0" />
                                                    </VBox.margin>
@@ -127,22 +131,25 @@
                                              </children>
                                           </VBox>
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </VBox.margin>
                                     </HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="157.0" prefWidth="547.0">
+                                    <HBox fx:id="member_info" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="157.0" prefWidth="547.0" style="-fx-background-color: #e7e7e7;">
                                        <children>
-                                          <TextField promptText="Enter Member ID">
+                                          <TextField fx:id="memberIDInput" onAction="#loadMemberInfo" prefHeight="26.0" prefWidth="170.0" promptText="Enter Member ID">
                                              <HBox.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </HBox.margin>
                                           </TextField>
                                           <VBox alignment="CENTER" prefHeight="157.0" prefWidth="378.0">
                                              <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Member Name" textAlignment="CENTER" wrappingWidth="367.8388671875">
+                                                <Text fx:id="memberName" strokeType="OUTSIDE" strokeWidth="0.0" text="Member Name" textAlignment="CENTER" wrappingWidth="367.8388671875">
                                                    <VBox.margin>
                                                       <Insets />
                                                    </VBox.margin>
                                                 </Text>
-                                                <Text layoutX="10.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact" textAlignment="CENTER" wrappingWidth="367.8388671875">
+                                                <Text fx:id="memberContact" layoutX="10.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact" textAlignment="CENTER" wrappingWidth="367.8388671875">
                                                    <VBox.margin>
                                                       <Insets top="10.0" />
                                                    </VBox.margin>
@@ -150,10 +157,20 @@
                                              </children>
                                           </VBox>
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" left="20.0" right="20.0" top="20.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="129.0" prefWidth="547.0">
                                        <children>
-                                          <JFXButton styleClass="setup-button" stylesheets="@main.css" text="ISSUE" />
+                                          <JFXButton prefHeight="51.0" prefWidth="144.0" styleClass="setup-button" stylesheets="@main.css" text="ISSUE">
+                                             <graphic>
+                                                <ImageView fitHeight="31.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../icons/rename.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
                                        </children>
                                     </HBox>
                                  </children>
@@ -184,8 +201,25 @@
                                  <bottom>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <JFXButton styleClass="setup-button" stylesheets="@main.css" text="RENEW" />
-                                          <JFXButton styleClass="setup-button" stylesheets="@main.css" text="SUBMISSION" />
+                                          <JFXButton prefHeight="54.0" prefWidth="156.0" styleClass="setup-button" stylesheets="@main.css" text="RENEW">
+                                             <HBox.margin>
+                                                <Insets right="20.0" />
+                                             </HBox.margin>
+                                             <graphic>
+                                                <ImageView fitHeight="44.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../icons/reset.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton prefHeight="51.0" prefWidth="208.0" styleClass="setup-button" stylesheets="@main.css" text="SUBMISSION">
+                                             <graphic>
+                                                <ImageView fitHeight="32.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../icons/submit.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
                                        </children>
                                     </HBox>
                                  </bottom>
