@@ -25,9 +25,11 @@ public class SettingsController implements Initializable{
 
     @FXML
     private JFXTextField username;
-
+    
     @FXML
     private JFXPasswordField password;
+
+   
 
     @FXML
     void handleCancelButtonAction(ActionEvent event) {

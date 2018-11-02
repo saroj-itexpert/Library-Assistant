@@ -3,11 +3,14 @@ package library.assistant.database;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JOptionPane;
+
+import library.assistant.ui.listbook.BookListController.Book;
 
 public class DatabaseHandler {
 	private static DatabaseHandler handler;
@@ -153,6 +156,41 @@ public class DatabaseHandler {
 		}finally {
 			
 		}
+	}
+	
+	public boolean deleteBook(Book book) {
+		String deleteStatement = "DELETE FROM BOOK WHERE ID = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(deleteStatement);
+			pstmt.setString(1, book.getId());
+			int result = pstmt.executeUpdate();
+			System.out.println(result);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean isBookAlreadyIssued(Book book) {
+		String checkstmt = "SELECT COUNT(*) FROM ISSUE WHERE bookid = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(checkstmt);
+			pstmt.setString(1, book.getId());
+			ResultSet rs = stmt.executeQuery(checkstmt);
+			if(rs.next()) {
+				int count = rs.getInt(1);
+				System.out.println(count);
+				if(count>0) {
+					return true;
+				}else {
+					return false;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

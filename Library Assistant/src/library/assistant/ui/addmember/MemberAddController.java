@@ -74,6 +74,15 @@ public class MemberAddController implements Initializable {
 			alert.setContentText("Error Occured");
 			alert.showAndWait();
 		}
+		
+		clearAddMemberCache();
+	}
+
+	private void clearAddMemberCache() {
+		id.setText("");
+		name.setText("");
+		mobile.setText("");
+		email.setText("");
 	}
 
 	@FXML

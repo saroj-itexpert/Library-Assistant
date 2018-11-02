@@ -15,6 +15,7 @@ public class Main extends Application{
 			AnchorPane root =(AnchorPane) FXMLLoader.load(getClass().getClassLoader().getResource("library/assistant/ui/login/login.fxml"));
 			Scene scene = new Scene(root);
 			scene.getStylesheets().addAll(Main.class.getResource("main.css").toExternalForm());
+			primaryStage.setTitle("Library Assistant");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			

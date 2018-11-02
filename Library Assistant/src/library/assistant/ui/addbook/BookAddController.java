@@ -86,10 +86,18 @@ public class BookAddController implements Initializable {
     			}
     	
     	}
+    	clearAddBookCache();
     
     }
 
-    @FXML
+    private void clearAddBookCache() {
+    	id.setText("");
+    	author.setText("");
+    	title.setText("");
+    	publisher.setText("");
+	}
+
+	@FXML
     void cancel(ActionEvent event) {
     	Stage stage = (Stage)rootPane.getScene().getWindow();
     	stage.close();

@@ -3,6 +3,7 @@ package library.assistant.ui.listbook;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,17 +12,21 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import library.assistant.alert.AlertMaker;
 import library.assistant.database.DatabaseHandler;
 import library.assistant.ui.addbook.BookAddController;
 
 public class BookListController implements Initializable {
-		
+
 	ObservableList<Book> list = FXCollections.observableArrayList();
 
 	@FXML
@@ -49,8 +54,40 @@ public class BookListController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		initCol();
-
 		loadData();
+	}
+
+	@FXML
+	void handleBookDeleteOption(ActionEvent event) {
+		//Fetch the selected row
+		Book selectedForDeletion = tableView.getSelectionModel().getSelectedItem();
+		if(selectedForDeletion == null) {
+			AlertMaker.showErrorMessage("No Book Selected", "Please select book for deletion");
+			return;
+		}
+		if(DatabaseHandler.getInstance().isBookAlreadyIssued(selectedForDeletion)) {
+			 AlertMaker.showErrorMessage("Can't be deleted", "This book is already issued and cant be deleted.");
+	         return;
+		}
+	
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Deleting book");
+		alert.setContentText("Are you sure to delete the book " + selectedForDeletion.getTitle());
+		Optional<ButtonType> answer = alert.showAndWait();
+		if(answer.get()== ButtonType.OK) {
+			//Do rest, of the processing
+			Boolean result = DatabaseHandler.getInstance().deleteBook(selectedForDeletion);
+			if(result) {
+				AlertMaker.showSimpleAlert("Book Deleted", selectedForDeletion.getTitle()+ " was deleted successfully!");
+				list.remove(selectedForDeletion);
+			}else {
+				AlertMaker.showSimpleAlert("Failed",selectedForDeletion.getTitle()+  " couldn't be deleted!");
+			}
+			
+		}else {
+			//cancel the process of deletion
+			AlertMaker.showSimpleAlert("Deletion Cacnelled", "Deletion Process Cancelled");
+		}
 	}
 
 	private void loadData() {
@@ -58,22 +95,22 @@ public class BookListController implements Initializable {
 		String qu = "SELECT * FROM BOOK";
 		ResultSet rs = handler.execQuery(qu);
 		try {
-			while(rs.next()) {
+			while (rs.next()) {
 				String titlex = rs.getString("title");
 				String author = rs.getString("author");
 				String id = rs.getString("id");
 				String publisher = rs.getString("publisher");
 				Boolean avail = rs.getBoolean("isAvail");
-				//add datas to the list
+				// add datas to the list
 				list.add(new Book(titlex, id, author, publisher, avail));
-				
+
 			}
-			
-		}catch(SQLException ex) {
-			Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);	
+
+		} catch (SQLException ex) {
+			Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		//associate list with tableview
-		tableView.getItems().setAll(list);
+		// associate list with tableview
+		tableView.setItems(list);
 
 	}
 
@@ -83,7 +120,7 @@ public class BookListController implements Initializable {
 		authorCol.setCellValueFactory(new PropertyValueFactory<>("author"));
 		publisherCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
 		availabilityCol.setCellValueFactory(new PropertyValueFactory<>("availability"));
-		
+
 	}
 
 	public static class Book {
@@ -93,7 +130,7 @@ public class BookListController implements Initializable {
 		private final SimpleStringProperty publisher;
 		private final SimpleBooleanProperty availability;
 
-		 Book(String title, String id, String author, String publisher, Boolean availability) {
+		Book(String title, String id, String author, String publisher, Boolean availability) {
 			super();
 			this.title = new SimpleStringProperty(title);
 			this.id = new SimpleStringProperty(id);
