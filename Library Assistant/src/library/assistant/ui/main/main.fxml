@@ -201,7 +201,7 @@
                                  <bottom>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <JFXButton prefHeight="42.0" prefWidth="141.0" styleClass="setup-button" stylesheets="@main.css" text="RENEW">
+                                          <JFXButton onAction="#loadRenewOp" prefHeight="42.0" prefWidth="141.0" styleClass="setup-button" stylesheets="@main.css" text="RENEW">
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin>
@@ -212,7 +212,7 @@
                                                    </image>
                                                 </ImageView>
                                              </graphic></JFXButton>
-                                          <JFXButton prefHeight="23.0" prefWidth="150.0" styleClass="setup-button" stylesheets="@main.css" text="SUBMISSION">
+                                          <JFXButton onAction="#loadSubmissionOp" prefHeight="23.0" prefWidth="150.0" styleClass="setup-button" stylesheets="@main.css" text="SUBMISSION">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
