@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
+import javafx.scene.control.ButtonType;
 import java.util.ResourceBundle;
 
+//import com.jfoenix.controls.JFXButton.ButtonType;
 import com.jfoenix.effects.JFXDepthManager;
 
 import javafx.fxml.FXML;
@@ -14,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
@@ -159,6 +163,49 @@ public class MainController implements Initializable {
 				e.printStackTrace();
 			}
 		 	
+	 }
+	 
+	 @FXML
+	 private void loadIssueOperation(ActionEvent event) {
+		 String memberID = memberIDInput.getText();
+		 String bookID = bookIDInput.getText();
+		 
+		 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		 alert.setTitle("Confirm Issue Operation");
+		 alert.setHeaderText(null);
+		 alert.setContentText("Are you sure want to issue the book "+ bookName.getText()+"\n to " + memberName.getText() + " ?");
+		 
+		 Optional<ButtonType> response = alert.showAndWait();
+		 if(response.get() == ButtonType.OK) {
+			 String str = "INSERT INTO ISSUE(memberID,bookID) VALUES ("
+					 	+"'" +memberID+"',"
+					 	+"'" +bookID+"')";
+			 String str2 = "UPDATE BOOK SET isAvail = false WHERE id='"+bookID+"'";
+		 
+			 if(databaseHandler.execAction(str)&& databaseHandler.execAction(str2)) {
+				 Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+				 alert.setTitle("Success");
+				 alert.setHeaderText(null);
+				 alert.setContentText("Book Issue Complete!");
+				 alert.showAndWait();
+				  
+			 }else {
+				 Alert alert1 = new Alert(Alert.AlertType.ERROR);
+				 alert.setTitle("Failed");
+				 alert.setHeaderText(null);
+				 alert.setContentText("Issue Operation Failed!");
+				 alert.showAndWait();
+
+			 }
+		 
+		 }else {
+			 Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+			 alert.setTitle("Cancelled");
+			 alert.setHeaderText(null);
+			 alert.setContentText("Issue Operation Cancelled!");
+			 alert.showAndWait();
+		 }
+	 
 	 }
 
 	@Override
