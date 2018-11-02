@@ -93,6 +93,13 @@ public class MainController implements Initializable {
 		loadWindow("/library/assistant/ui/listmember/member_list.fxml", "Member List");
 
 	}
+	
+
+    @FXML
+    void loadSettingsOption(ActionEvent event) {
+		loadWindow("/library/assistant/settings/settings.fxml", "Settings");
+
+    }
 
 	void loadWindow(String location, String title) {
 		try {
