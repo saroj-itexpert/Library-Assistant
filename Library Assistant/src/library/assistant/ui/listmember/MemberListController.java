@@ -1,5 +1,6 @@
 package library.assistant.ui.listmember;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,12 +11,21 @@ import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import library.assistant.alert.AlertMaker;
 import library.assistant.database.DatabaseHandler;
+import library.assistant.ui.addbook.BookAddController;
+import library.assistant.ui.addmember.MemberAddController;
 import library.assistant.ui.listbook.BookListController;
 
 public class MemberListController implements Initializable {
@@ -36,6 +46,48 @@ public class MemberListController implements Initializable {
 
 	@FXML
 	private TableColumn<Member, String> emailCol;
+	
+	@FXML
+    void handleDeleteMember(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handleEditMember(ActionEvent event) {
+    	Member selectedforEdit = tableView.getSelectionModel().getSelectedItem();
+    	if(selectedforEdit == null ) {
+    		 AlertMaker.showErrorMessage("No Member selected", "Please select a member to edit.");
+	         return;
+    	}
+    	
+        try {
+        	
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/library/assistant/ui/addmember/member_add.fxml"));
+			Parent parent = loader.load();
+			
+			MemberAddController controller = (MemberAddController)loader.getController();
+			controller.infalteUI(selectedforEdit);
+			Stage stage = new Stage(StageStyle.DECORATED);
+			stage.setTitle("Edit Member");
+			stage.setScene(new Scene(parent));
+			stage.show();
+			
+			stage.setOnCloseRequest((e)->{
+				handleRefresh(new ActionEvent());
+			});
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+    }
+
+    @FXML
+    void handleRefresh(ActionEvent event) {
+		loadData();
+		
+    }
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -45,6 +97,7 @@ public class MemberListController implements Initializable {
 
 	
 	private void loadData() {
+		list.clear();
 		DatabaseHandler handler = DatabaseHandler.getInstance();
 		String qu = "SELECT * FROM MEMBER";
 		ResultSet rs = handler.execQuery(qu);
@@ -64,7 +117,7 @@ public class MemberListController implements Initializable {
 			Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);	
 		}
 		//associate list with tableview
-		tableView.getItems().setAll(list);
+		tableView.setItems(list);
 
 	}
 
@@ -82,7 +135,7 @@ public class MemberListController implements Initializable {
 		private final SimpleStringProperty mobile;
 		private final SimpleStringProperty email;
 
-		Member(String name, String id, String mobile, String email) {
+		public Member(String name, String id, String mobile, String email) {
 			super();
 			this.name = new SimpleStringProperty(name);
 			this.id = new SimpleStringProperty(id);

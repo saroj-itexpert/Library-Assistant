@@ -12,7 +12,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import library.assistant.alert.AlertMaker;
 import library.assistant.database.DatabaseHandler;
+import library.assistant.ui.listbook.BookListController;
+import library.assistant.ui.listmember.MemberListController;
+import library.assistant.ui.listmember.MemberListController.Member;
 
 public class MemberAddController implements Initializable {
 
@@ -38,6 +42,10 @@ public class MemberAddController implements Initializable {
 
 	@FXML
 	private JFXButton cancelButton;
+	
+    public Boolean isInEditMode = Boolean.FALSE;
+    DatabaseHandler databaseHandler;
+
 
 	@FXML
 	void addMember(ActionEvent event) {
@@ -54,6 +62,12 @@ public class MemberAddController implements Initializable {
 			alert.setContentText("Please Enter in all fields");
 			alert.showAndWait();
 			return;
+		}
+		
+		if(isInEditMode) {
+			handleEditMember();
+			return;
+			
 		}
 		String st = "INSERT INTO MEMBER VALUES (" +
 					"'"+mID+"',"+
@@ -77,12 +91,23 @@ public class MemberAddController implements Initializable {
 		
 		clearAddMemberCache();
 	}
+	@FXML
+	private void handleEditMember() {
+		Member member = new MemberListController.Member( name.getText(), id.getText(), mobile.getText(), email.getText());
+    	if(databaseHandler.updateMember(member)) {
+    		AlertMaker.showSimpleAlert("Success", "Member Updated Successfully!");
+    	}else {
+    		AlertMaker.showErrorMessage("Error", "Sorry! Member wasn't updated!");
+    	}
+		
+	}
 
 	private void clearAddMemberCache() {
 		id.setText("");
 		name.setText("");
 		mobile.setText("");
 		email.setText("");
+		
 	}
 
 	@FXML
@@ -96,6 +121,17 @@ public class MemberAddController implements Initializable {
 		//initiate DatabaseHandler
 		handler = DatabaseHandler.getInstance();
 	
+	}
+
+	public void infalteUI(MemberListController.Member member) {
+		name.setText(member.getName());
+		id.setText(member.getId());
+		mobile.setText(member.getMobile());
+		email.setText(member.getEmail());
+		id.setEditable(false);
+		isInEditMode = Boolean.TRUE;
+		
+		
 	}
 
 }

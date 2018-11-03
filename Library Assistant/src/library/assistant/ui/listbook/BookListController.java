@@ -1,5 +1,6 @@
 package library.assistant.ui.listbook;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,13 +15,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import library.assistant.alert.AlertMaker;
 import library.assistant.database.DatabaseHandler;
 import library.assistant.ui.addbook.BookAddController;
@@ -57,40 +63,69 @@ public class BookListController implements Initializable {
 		loadData();
 	}
 
-	@FXML
-	void handleBookDeleteOption(ActionEvent event) {
-		//Fetch the selected row
-		Book selectedForDeletion = tableView.getSelectionModel().getSelectedItem();
-		if(selectedForDeletion == null) {
-			AlertMaker.showErrorMessage("No Book Selected", "Please select book for deletion");
-			return;
-		}
-		if(DatabaseHandler.getInstance().isBookAlreadyIssued(selectedForDeletion)) {
-			 AlertMaker.showErrorMessage("Can't be deleted", "This book is already issued and cant be deleted.");
-	         return;
-		}
-	
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle("Deleting book");
-		alert.setContentText("Are you sure to delete the book " + selectedForDeletion.getTitle());
-		Optional<ButtonType> answer = alert.showAndWait();
-		if(answer.get()== ButtonType.OK) {
-			//Do rest, of the processing
-			Boolean result = DatabaseHandler.getInstance().deleteBook(selectedForDeletion);
-			if(result) {
-				AlertMaker.showSimpleAlert("Book Deleted", selectedForDeletion.getTitle()+ " was deleted successfully!");
-				list.remove(selectedForDeletion);
-			}else {
-				AlertMaker.showSimpleAlert("Failed",selectedForDeletion.getTitle()+  " couldn't be deleted!");
-			}
-			
-		}else {
-			//cancel the process of deletion
-			AlertMaker.showSimpleAlert("Deletion Cacnelled", "Deletion Process Cancelled");
-		}
-	}
+	 @FXML
+	    private void handleBookDeleteOption(ActionEvent event) {
+	        //Fetch the selected row
+	        Book selectedForDeletion = tableView.getSelectionModel().getSelectedItem();
+	        if (selectedForDeletion == null) {
+	            AlertMaker.showErrorMessage("No book selected", "Please select a book for deletion.");
+	            return;
+	        }
+	        System.out.println("TEST BOOK DELETE");
+	        if (DatabaseHandler.getInstance().isBookAlreadyIssued(selectedForDeletion)) {
+	            AlertMaker.showErrorMessage("Cant be deleted", "This book is already issued and cant be deleted.");
+	            return;
+	        }
+	        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+	        alert.setTitle("Deleting book");
+	        alert.setContentText("Are you sure want to delete the book " + selectedForDeletion.getTitle() + " ?");
+	        Optional<ButtonType> answer = alert.showAndWait();
+	        if (answer.get() == ButtonType.OK) {
+	            Boolean result = DatabaseHandler.getInstance().deleteBook(selectedForDeletion);
+	            if (result) {
+	                AlertMaker.showSimpleAlert("Book deleted", selectedForDeletion.getTitle() + " was deleted successfully.");
+	                list.remove(selectedForDeletion);
+	            } else {
+	                AlertMaker.showSimpleAlert("Failed", selectedForDeletion.getTitle() + " could not be deleted");
+	            }
+	        } else {
+	            AlertMaker.showSimpleAlert("Deletion cancelled", "Deletion process cancelled");
+	        }
+	    }
+	 
+	 @FXML
+	    void handleBookEditOption(ActionEvent event) {
+	        Book selectedForEdit = tableView.getSelectionModel().getSelectedItem();
+	        if (selectedForEdit == null) {
+	            AlertMaker.showErrorMessage("No book selected", "Please select a book for deletion.");
+	            return;
+	        }
+	        try {
+	        	
+	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/library/assistant/ui/addbook/add_book.fxml"));
+				Parent parent = loader.load();
+				
+				BookAddController controller = (BookAddController)loader.getController();
+				controller.infalteUI(selectedForEdit);
+				Stage stage = new Stage(StageStyle.DECORATED);
+				stage.setTitle("Edit Book");
+				stage.setScene(new Scene(parent));
+				stage.show();
+				
+				stage.setOnCloseRequest((e)->{
+					handleBookRefreshOption(new ActionEvent());
+				});
 
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	        
+	    }
+	 
+	 
 	private void loadData() {
+		list.clear();
+		
 		DatabaseHandler handler = DatabaseHandler.getInstance();
 		String qu = "SELECT * FROM BOOK";
 		ResultSet rs = handler.execQuery(qu);
@@ -113,6 +148,14 @@ public class BookListController implements Initializable {
 		tableView.setItems(list);
 
 	}
+	
+	   @FXML
+	    void handleBookRefreshOption(ActionEvent event) {
+		   loadData();
+		   
+	    }
+	   
+	   
 
 	private void initCol() {
 		titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -130,7 +173,7 @@ public class BookListController implements Initializable {
 		private final SimpleStringProperty publisher;
 		private final SimpleBooleanProperty availability;
 
-		Book(String title, String id, String author, String publisher, Boolean availability) {
+		public Book(String title, String id, String author, String publisher, Boolean availability) {
 			super();
 			this.title = new SimpleStringProperty(title);
 			this.id = new SimpleStringProperty(id);
