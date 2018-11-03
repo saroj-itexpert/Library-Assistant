@@ -173,6 +173,20 @@ public class DatabaseHandler {
 		return false;
 	}
 	
+	public boolean deleteMember(Member member) {
+		String deleteStatement = "DELETE FROM MEMBER WHERE ID = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(deleteStatement);
+			pstmt.setString(1, member.getId());
+			int result = pstmt.executeUpdate();
+			System.out.println(result);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public boolean isBookAlreadyIssued(Book book) {
 		String checkstmt = "SELECT COUNT(*) FROM ISSUE WHERE bookid = ?";
 		try {

@@ -94,7 +94,7 @@ public class MemberAddController implements Initializable {
 	@FXML
 	private void handleEditMember() {
 		Member member = new MemberListController.Member( name.getText(), id.getText(), mobile.getText(), email.getText());
-    	if(databaseHandler.updateMember(member)) {
+    	if(DatabaseHandler.getInstance().updateMember(member)) {
     		AlertMaker.showSimpleAlert("Success", "Member Updated Successfully!");
     	}else {
     		AlertMaker.showErrorMessage("Error", "Sorry! Member wasn't updated!");
